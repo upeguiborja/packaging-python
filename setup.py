@@ -6,8 +6,11 @@ https://github.com/pypa/sampleproject
 """
 
 # Always prefer setuptools over distutils
-from setuptools import setup, find_packages
-from os import path
+from setuptools import setup, find_packages, Command
+from os import path, remove
+from glob import glob
+from shutil import rmtree
+
 # io.open is needed for projects that support Python 2.7
 # It ensures open() defaults to text mode with universal newlines,
 # and accepts an argument to specify the text encoding
@@ -22,6 +25,25 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
 # Fields marked as "Optional" may be commented out.
+
+class CleanCommand(Command):
+    user_options = []
+    
+    def initialize_options(self):
+        pass
+    def finalize_options(self):
+        pass
+    def run(self):
+        _globs = ['./build', './*.pyc', './*.tgz', './*.egg-info']
+        for _glob in _globs:
+            for _match in glob(_glob):
+                if (path.isfile(_match)):
+                    print(' - Deleting', _match, 'file') 
+                    remove(_match)
+                else:
+                    print(' - Deleting', _match, 'directory')
+                    rmtree(_match)
+        print(' - Done')         
 
 setup(
     # This is the name of your project. The first time you publish this
@@ -209,4 +231,7 @@ setup(
     #    'Say Thanks!': 'http://saythanks.io/to/example',
     #    'Source': 'https://github.com/pypa/sampleproject/',
     #},
+    cmdclass = {
+        'clean': CleanCommand,
+    },
 )

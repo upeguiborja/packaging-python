@@ -1,8 +1,0 @@
-README.md
-setup.py
-hello-world/__init__.py
-hello_world.egg-info/PKG-INFO
-hello_world.egg-info/SOURCES.txt
-hello_world.egg-info/dependency_links.txt
-hello_world.egg-info/requires.txt
-hello_world.egg-info/top_level.txt
