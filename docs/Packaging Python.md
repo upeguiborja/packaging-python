@@ -15,7 +15,7 @@ Pero esté estilo de trabajo requiere que la persona encargada del despliegue te
 En palabras de la [Python Packaging Authority](https://packaging.python.org/overview/#python-modules) 
 > El patrón de la utilización de modulos _.py_ de python como medio para distribuir proyectos no es escalable para proyectos que consistan de multitudes de ficheros, necesiten librerias adicionales o requieran una versión especifica de python.
 
-## Empaquetando ando
+## Empaquetando
 
 > El empaquetamiento se puede entender como el arte producir un artefacto contenido para la transferencia y uso confiable en ambientes productivos - [The Packaging Gradient](https://www.youtube.com/watch?v=iLVNWfPWAC8)
 
@@ -217,5 +217,35 @@ Una vez hallamos haya terminado el proceso nuestro paquete estará disponible en
 
 O podemos crear nuestro propio repositorio de paquetes y subirlo allí especificando `--repository-url` en las opciones de `twine`.
 
-## 
+## Usando Poetry
+
+Como pudimos apreciar, el proceso de administrar un paquete de python mediante el archivo `setup.py` es muy engorroso, es necesario añadir las dependencias manualmente y tambien crear los venvs de manera virtual. Para nuestra suerte existe __Poetry__.
+
+ [Poetry](https://github.com/python-poetry/poetry) es una herramienta de linea de comandos que nos permite administrar dependencias python, pero además nos permite hacer build de nuestro paquete de una manera sencilla.
+
+Para instalarlo en Linux podemos hacerlo ejecutando
+
+```bash
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3
+```
+> ⚠️ Es necesario correr la instalación con python3 
+
+Una vez instalado podemos crear un nuevo projecto de una manera muy parecida al uso de `ng new` (_Angular_) con `poetry new <my-project-name>` 
+
+La lista completa de los comandos que se pueden utilizar en poetry està disponible en la [documentación](https://python-poetry.org/docs/cli/), entre otras cosas se pueden instalar paquetes que se agregarán automaticamente a las dependencias de nuestra aplicación, se pueden instalar dependencias de desarrollo y se puede empaquetar nuestra aplicación con un solo comando entre otras cosas.
+
+## Creando nuestro repositorio de PyPi y configurandolo en Poetry
+
+Podemos crear un indice de paquetes sencillo y open source para distribuir nuestros paquetes y aplicaciones python internamente en nuestra compañía o bien podemos utilizar una solución paga como _JFrog Artifactory_. 
+
+En esta ocasión pondremos en marcha un servidor abierto y gratuito para almacenar nuestros paquetes de python con _Pulp_. Para ello vamos a utilizar un contenedor de _Docker_ 🐳 con el fin de evitar tediosas instalaciónes. Para ello seguimos las instrucciones en la [documentación](https://pulpproject.org/2015/05/21/use-docker-to-try-pulp/).
+
+```bash
+wget https://raw.githubusercontent.com/pulp/packaging/docker/dockerfiles/centos/start.sh
+mkdir ~/pulp-data
+chmod u+x ./start.sh
+sudo ./start.sh ~/pulp-data
+```
+
+> ⚠️ No se debe containerizar _Pulp_ en producción utilizando este script.
 
